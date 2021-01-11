@@ -19,6 +19,24 @@ Route::get('/', function () {
 Route::get('/sms-masuk', function () {
     return view('pages.pesan.sms-masuk');
 });
+Route::get('/sms-keluar', function () {
+    return view('pages.pesan.sms-keluar');
+});
+Route::get('/sms-terkirim', function () {
+    return view('pages.pesan.sms-terkirim');
+});
+Route::get('/email-terkirim', function () {
+    return view('pages.pesan.email-terkirim');
+});
+Route::get('/sms-terjadwal', function () {
+    return view('pages.pesan.sms-terjadwal');
+});
+Route::get('/list-kontak', function () {
+    return view('pages.pengaturan.kontak.list-kontak');
+});
+Route::get('/grup-kontak', function () {
+    return view('pages.pengaturan.kontak.grup-kontak');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -1,13 +1,13 @@
 @extends('layout.layout')
 
 @section('title')
-    SMS Masuk
+    Email Terkirim
 @endsection
 
 @section('content')
     {{-- Table --}}
     <section>
-        <x-table title="Data SMS Masuk" description="" id="" class="">
+        <x-table title="Data Email Terkirim" description="" id="" class="">
             <x-slot name="floatRight">
                 <div class="form-check d-inline">
                   <label class="form-check-label">

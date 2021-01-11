@@ -282,7 +282,7 @@
                             <div class="col-12">
                                 <div class="form-group">
                                     <label>Email</label>
-                                    <input type="text" class="form-control" name="contact" placeholder="Email" value="email@mail.com">
+                                    <input type="email" class="form-control" name="contact" placeholder="Email" value="email@mail.com">
                                 </div>
                             </div>
                             <div class="col-12">
