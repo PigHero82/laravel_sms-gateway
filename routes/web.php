@@ -37,6 +37,18 @@ Route::get('/list-kontak', function () {
 Route::get('/grup-kontak', function () {
     return view('pages.pengaturan.kontak.grup-kontak');
 });
+Route::get('/laporan', function () {
+    return view('pages.pengaturan.laporan');
+});
+Route::get('/auto-replay', function () {
+    return view('pages.pengaturan.auto-replay');
+});
+Route::get('/template-sms', function () {
+    return view('pages.pengaturan.template-sms');
+});
+Route::get('/pengaturan-modem', function () {
+    return view('pages.pengaturan.pengaturan-modem.index');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');
