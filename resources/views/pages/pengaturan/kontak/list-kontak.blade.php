@@ -43,20 +43,45 @@
     {{-- Modal Tambah Kontak --}}
     <x-modal id="modalTambahKontak" title="Kontak Baru" class="">
         <div class="modal-body">
-            <x-input-form label="Nama" type="text" class="" name="" id="" placeholder="Nama" value="" minlength="" maxlength="" required="" />
-            <x-input-form label="Email" type="email" class="" name="" id="" placeholder="Email" value="" minlength="" maxlength="" required="" />
-            <x-select label="Negara" name="" id="" required="" class="">
-                <option value="" hidden>-- Pilih Negara --</option>
-                <option value="">Indonesia</option>
-                <option value="">Malaysia</option>
-            </x-select>
-            <x-input-form label="Kode Negara" type="number" class="" name="" id="" placeholder="Kode Negara" value="" minlength="" maxlength="" required="" />
-            <x-input-form label="Nomor HP" type="number" class="" name="" id="" placeholder="Nomor HP" value="" minlength="" maxlength="" required="" />
-            <x-select label="Grup" name="" id="" required="" class="">
-                <option value="" hidden>-- Pilih Grup --</option>
-                <option value="">Default</option>
-                <option value="">Modem</option>
-            </x-select>
+            <x-input-form label="Nama">
+                <input type="text" class="form-control" name="" id="" placeholder="Nama">
+            </x-input-form>
+            
+            <x-input-form label="Email">
+                <input type="email" class="form-control" name="" id="" placeholder="Email">
+            </x-input-form>
+
+            <select class="" id="exampleFormControlSelect1">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            
+            <x-input-form label="Negara">
+                <select name="" class="form-control" id="">
+                    <option value="" hidden>-- Pilih Negara --</option>
+                    <option value="">Indonesia</option>
+                    <option value="">Malaysia</option>
+                </select>
+            </x-input-form>
+            
+            <x-input-form label="Kode Negara">
+                <input type="number" class="form-control" name="" id="" placeholder="Kode Negara">
+            </x-input-form>
+            
+            <x-input-form label="Nomor HP">
+                <input type="number" class="form-control" name="" id="" placeholder="Nomor HP">
+            </x-input-form>
+
+            <x-input-form label="Grup">
+                <select name="" class="form-control" id="">
+                    <option value="" hidden>-- Pilih Grup --</option>
+                    <option value="">Default</option>
+                    <option value="">Modem</option>
+                </select>
+            </x-input-form>
         </div>
 
         <div class="modal-footer">
@@ -67,7 +92,9 @@
     {{-- Modal Import Kontak --}}
     <x-modal id="modalImportKontak" title="Import Kontak" class="">
         <div class="modal-body">
-            <x-input-form label="File Excel (.xlsx)" type="file" class="form-control-file" name="" id="" placeholder="" value="" minlength="" maxlength="" required="" />
+            <x-input-form  label="File Excel (.xlsx)">
+                <input type="file" class="form-control" name="" id="">
+            </x-input-form>
         </div>
 
         <div class="modal-footer">

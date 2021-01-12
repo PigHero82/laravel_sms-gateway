@@ -4,18 +4,20 @@ namespace App\View\Components;
 
 use Illuminate\View\Component;
 
-class InputForm extends Component
+class CardBasic extends Component
 {
-    public $label;
+    public $class;
+    public $title;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($label)
+    public function __construct($class, $title)
     {
-        $this->label = $label;
+        $this->class = $class;
+        $this->title = $title;
     }
 
     /**
@@ -25,6 +27,6 @@ class InputForm extends Component
      */
     public function render()
     {
-        return view('components.input-form');
+        return view('components.card-basic');
     }
 }

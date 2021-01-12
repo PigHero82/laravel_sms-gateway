@@ -22,5 +22,4 @@
 <li class=" nav-item"><a href="#"><i class="feather icon-slack"></i><span class="menu-title">Template SMS</span></a></li>
 <li class=" nav-item"><a href="#"><i class="feather icon-settings"></i><span class="menu-title">Pengaturan Modem</span></a></li>
 <li class=" nav-item"><a href="#"><i class="feather icon-cloud"></i><span class="menu-title">Database</span></a></li>
-<li class=" nav-item"><a href="#"><i class="feather icon-list"></i><span class="menu-title">Changelogs</span></a></li>
 <li class=" nav-item"><a href="#"><i class="feather icon-power"></i><span class="menu-title">Logout</span></a></li>

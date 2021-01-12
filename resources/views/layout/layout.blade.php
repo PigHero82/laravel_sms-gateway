@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/components.min.css') }}">
 
     <!-- BEGIN: Page CSS-->
-    <link rel="stylesheet" type="text/css" href="{{ ('app-assets/css/core/menu/menu-types/vertical-menu.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('app-assets/css/core/menu/menu-types/vertical-menu.min.css') }}">
     <!-- END: Page CSS-->
 
     <!-- BEGIN: Custom CSS-->

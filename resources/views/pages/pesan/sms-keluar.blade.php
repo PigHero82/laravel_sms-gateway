@@ -29,8 +29,12 @@
     {{-- Modal --}}
     <x-modal id="modalTambahPesanKeluar" title="Template Baru" class="">
         <div class="modal-body">
-            <x-input-form label="Tujuan" type="text" class="" name="" id="" placeholder="Nama" value="" minlength="" maxlength="" required="" />
-            <x-textarea label="Tulis Pesan" class="" name="" id="" rows="5" placeholder="Tulis Pesan" required="" />
+            <x-input-form label="Tujuan">
+                <input type="text" class="form-control" placeholder="Nama">
+            </x-input-form>
+            <x-input-form label="Tulis Pesan">
+                <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Tulis Pesan"></textarea>
+            </x-input-form>
         </div>
 
         <div class="modal-footer">

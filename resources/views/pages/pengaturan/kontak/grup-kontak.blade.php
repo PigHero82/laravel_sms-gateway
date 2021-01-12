@@ -26,7 +26,9 @@
     {{-- Modal --}}
     <x-modal id="modalTambahGrup" title="Grup Baru" class="">
         <div class="modal-body">
-            <x-input-form label="Nama" type="text" class="" name="" id="" placeholder="Nama" value="" minlength="" maxlength="" required="" />
+            <x-input-form label="Nama">
+                <input type="text" class="form-control" name="" id="" placeholder="Nama">
+            </x-input-form>
         </div>
 
         <div class="modal-footer">

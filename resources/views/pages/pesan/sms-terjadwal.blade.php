@@ -28,9 +28,17 @@
     {{-- Modal --}}
     <x-modal id="modalTambahPesanTerjadwal" title="Schedule Baru" class="">
         <div class="modal-body">
-            <x-input-form label="Nomor HP" type="number" class="" name="" id="" placeholder="Cari Nomor" value="" minlength="" maxlength="" required="" />
-            <x-textarea label="Pesan" class="" name="" id="" rows="5" placeholder="Tulis Pesan" required="" />
-            <x-input-form label="Tanggal" type="date" class="" name="" id="" placeholder="" value="" minlength="" maxlength="" required="" />
+            <x-input-form label="Nomor HP">
+                <input type="number" class="form-control" name="" id="" placeholder="Cari Nomor">
+            </x-input-form>
+
+            <x-input-form label="Pesan">
+                <textarea class="form-control" name="" id="" cols="30" rows="5" placeholder="Tulis Pesan"></textarea>
+            </x-input-form>
+
+            <x-input-form label="Tanggal">
+                <input type="date" class="form-control" name="" id="">
+            </x-input-form>
         </div>
 
         <div class="modal-footer">
