@@ -229,4 +229,9 @@ return [
 
     ],
 
+    'zenziva' => [
+        'userKey' => env('ZENZIVA_USERKEY'),
+        'passKey' => env('ZENZIVA_PASSKEY')
+    ],
+
 ];

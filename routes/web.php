@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SMSController;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::name('sms.')->prefix('sms')->group(function () {
+    Route::get('credit', [SMSController::class, 'credit'])->name('credit');
+    Route::post('send', [SMSController::class, 'send'])->name('send');
+});
 
 Route::get('/', function () {
     return view('pages.home.index');
