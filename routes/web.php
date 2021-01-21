@@ -15,6 +15,14 @@ use App\Http\Controllers\SMSController;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
 Route::name('sms.')->prefix('sms')->group(function () {
     Route::get('credit', [SMSController::class, 'credit'])->name('credit');
     Route::post('send', [SMSController::class, 'send'])->name('send');
@@ -56,9 +64,5 @@ Route::get('/template-sms', function () {
 Route::get('/pengaturan-modem', function () {
     return view('pages.pengaturan.pengaturan-modem.index');
 });
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
 
 require __DIR__.'/auth.php';
