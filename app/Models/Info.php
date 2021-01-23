@@ -11,4 +11,14 @@ class Info extends Model
 
     protected $table = 'info';
     protected $fillable = ['name', 'description'];
+
+    static function firstInfo($name)
+    {
+        return Info::firstWhere('name', $name);
+    }
+
+    static function updateInfo($name, $description)
+    {
+        Info::where('name', $name)->update(['description' => $description]);
+    }
 }

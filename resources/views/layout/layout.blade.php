@@ -96,7 +96,7 @@
                                     <span class="user-name text-bold-600">Admin</span>
                                     <span class="user-status">admin@mail.com</span>
                                 </div>
-                                <span><img class="round" src="{{ ('app-assets/images/portrait/small/avatar-s-11.jpg') }}" alt="avatar" height="40" width="40"></span>
+                                <span><img class="round" src="{{ asset('app-assets/images/portrait/small/avatar-s-11.jpg') }}" alt="avatar" height="40" width="40"></span>
                             </a>
                             {{-- Menu User --}}
                             <div class="dropdown-menu dropdown-menu-right">

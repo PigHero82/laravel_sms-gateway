@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Outbox;
+use App\Models\Template;
 use Illuminate\Http\Request;
 
-class OutboxController extends Controller
+class TemplateController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +14,7 @@ class OutboxController extends Controller
      */
     public function index()
     {
-        // 
+        //
     }
 
     /**
@@ -41,10 +41,10 @@ class OutboxController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Outbox  $outbox
+     * @param  \App\Models\Template  $template
      * @return \Illuminate\Http\Response
      */
-    public function show(Outbox $outbox)
+    public function show(Template $template)
     {
         //
     }
@@ -52,10 +52,10 @@ class OutboxController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Outbox  $outbox
+     * @param  \App\Models\Template  $template
      * @return \Illuminate\Http\Response
      */
-    public function edit(Outbox $outbox)
+    public function edit(Template $template)
     {
         //
     }
@@ -64,10 +64,10 @@ class OutboxController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Outbox  $outbox
+     * @param  \App\Models\Template  $template
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Outbox $outbox)
+    public function update(Request $request, Template $template)
     {
         //
     }
@@ -75,10 +75,10 @@ class OutboxController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Outbox  $outbox
+     * @param  \App\Models\Template  $template
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Outbox $outbox)
+    public function destroy(Template $template)
     {
         //
     }

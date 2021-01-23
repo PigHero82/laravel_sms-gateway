@@ -30,4 +30,12 @@ class SMS extends Model
             'message'   => $message
         ]);
     }
+
+    static function updateCredit($userKey, $passKey)
+    {
+        $credits = SMS::credit($userKey, $passKey);
+        $credit = str_replace(',', '', $credits['balance']);
+
+        Info::updateInfo('credit', (int)$credit);
+    }
 }

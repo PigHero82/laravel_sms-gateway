@@ -10,7 +10,7 @@
             <div class="card-body card-dashboard">
                 <p class="card-text">{{ $description }}</p>
                 <div class="table-responsive">
-                    <table class="table" id="{{ $id }}">
+                    <table class="table table-striped" id="{{ $id }}">
                         {{ $slot }}
                     </table>
                 </div>

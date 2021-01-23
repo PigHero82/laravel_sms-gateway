@@ -14,7 +14,9 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        $customer = Customer::miniGetCustomer();
+
+        return view('pages.pengaturan.kontak.list-kontak', compact('customer'));
     }
 
     /**

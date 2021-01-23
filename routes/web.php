@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OutboxController;
 use App\Http\Controllers\SMSController;
 
 /*
@@ -24,13 +26,15 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::name('sms.')->prefix('sms')->group(function () {
-    Route::get('credit', [SMSController::class, 'credit'])->name('credit');
+    Route::get('pulsa', [SMSController::class, 'credit'])->name('credit');
     Route::post('send', [SMSController::class, 'send'])->name('send');
+    Route::get('pesan-baru', [SMSController::class, 'index'])->name('index');
 });
 
-Route::get('/', function () {
-    return view('pages.home.index');
-});
+Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::resource('kontak', CustomerController::class);
+Route::resource('pesan-keluar', OutboxController::class);
+
 Route::get('/sms-masuk', function () {
     return view('pages.pesan.sms-masuk');
 });
@@ -45,9 +49,6 @@ Route::get('/email-terkirim', function () {
 });
 Route::get('/sms-terjadwal', function () {
     return view('pages.pesan.sms-terjadwal');
-});
-Route::get('/list-kontak', function () {
-    return view('pages.pengaturan.kontak.list-kontak');
 });
 Route::get('/grup-kontak', function () {
     return view('pages.pengaturan.kontak.grup-kontak');

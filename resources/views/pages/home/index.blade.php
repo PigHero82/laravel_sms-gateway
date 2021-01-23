@@ -8,9 +8,10 @@
     <!-- Card Statistic -->
     <section>
         <div class="row">
-            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="Inbox" value="0" icon="icon-inbox" color="text-danger"/>
-            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="Sent" value="0" icon="icon-send" color="text-primary"/>
-            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="Signal" value="0" icon="icon-bar-chart" color="text-warning"/>
+            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="Sisa Pulsa" value="Rp. {{ number_format($credit->description, 0, ',', '.') }}" icon="icon-bar-chart" color="text-warning"/>
+            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="Pesan Terkirim" value="{{ count($outbox) }}" icon="icon-send" color="text-danger"/>
+            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="Pelanggan" value="{{ count($customer) }}" icon="icon-user" color="text-success"/>
+            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="Grup Pelanggan" value="{{ count($group) }}" icon="icon-users" color="text-primary"/>
         </div>
     </section>
     <!--/ Card Statistic -->
@@ -23,17 +24,6 @@
         </div>
     </section>
     <!--/ Statistic -->
-
-    <!-- Card Statistic -->
-    <section>
-        <div class="row">
-            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="SMS Gagal" value="0" icon="icon-alert-octagon" color="text-danger"/>
-            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="SMS Terjadwal" value="0" icon="icon-clock" color="text-primary"/>
-            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="Kontak" value="0" icon="icon-users" color="text-success"/>
-            <x-card-statistic class="col-lg-3 col-sm-6 col-12" title="Email" value="0" icon="icon-mail" color="text-warning"/>
-        </div>
-    </section>
-    <!--/ Card Statistic -->
 @endsection
 
 @section('js')
