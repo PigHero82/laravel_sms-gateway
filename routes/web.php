@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OutboxController;
+use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\SMSController;
 
 /*
@@ -33,7 +34,8 @@ Route::name('sms.')->prefix('sms')->group(function () {
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::resource('kontak', CustomerController::class);
-Route::resource('pesan-keluar', OutboxController::class);
+Route::resource('pesan', OutboxController::class);
+Route::resource('template', TemplateController::class);
 
 Route::get('/sms-masuk', function () {
     return view('pages.pesan.sms-masuk');
@@ -58,9 +60,6 @@ Route::get('/laporan', function () {
 });
 Route::get('/auto-replay', function () {
     return view('pages.pengaturan.auto-replay');
-});
-Route::get('/template-sms', function () {
-    return view('pages.pengaturan.template-sms');
 });
 Route::get('/pengaturan-modem', function () {
     return view('pages.pengaturan.pengaturan-modem.index');

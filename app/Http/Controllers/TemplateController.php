@@ -14,7 +14,9 @@ class TemplateController extends Controller
      */
     public function index()
     {
-        //
+        $template = Template::getTemplate();
+
+        return view('pages.pengaturan.template-sms', compact('template'));
     }
 
     /**
@@ -35,7 +37,13 @@ class TemplateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'     => 'required',
+            'message'   => 'required'
+        ]);
+
+        Template::storeTemplate($request);
+        return back()->with('success', 'Template berhasil disimpan');
     }
 
     /**
@@ -46,7 +54,7 @@ class TemplateController extends Controller
      */
     public function show(Template $template)
     {
-        //
+        return json_encode($template);
     }
 
     /**
@@ -69,7 +77,13 @@ class TemplateController extends Controller
      */
     public function update(Request $request, Template $template)
     {
-        //
+        $request->validate([
+            'title'     => 'required',
+            'message'   => 'required'
+        ]);
+
+        Template::updateTemplate($template->id, $request);
+        return back()->with('success', 'Template berhasil diubah');
     }
 
     /**
@@ -80,6 +94,7 @@ class TemplateController extends Controller
      */
     public function destroy(Template $template)
     {
-        //
+        Template::destroyTemplate($template->id);
+        return back()->with('success', 'Template berhasil dihapus');
     }
 }

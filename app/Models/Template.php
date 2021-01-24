@@ -12,6 +12,11 @@ class Template extends Model
     protected $table = 'templates';
     protected $fillable = ['title', 'message'];
 
+    static function destroyTemplate($id)
+    {
+        Template::findOrFail($id)->delete();
+    }
+
     static function firstTemplate($id)
     {
         return Template::findOrFail($id);
@@ -25,6 +30,14 @@ class Template extends Model
     static function storeTemplate($request)
     {
         Template::create([
+            'title'     => $request->title,
+            'message'   => $request->message
+        ]);
+    }
+
+    static function updateTemplate($id, $request)
+    {
+        Template::whereId($id)->update([
             'title'     => $request->title,
             'message'   => $request->message
         ]);
