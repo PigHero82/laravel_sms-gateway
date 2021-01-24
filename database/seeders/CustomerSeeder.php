@@ -15,8 +15,8 @@ class CustomerSeeder extends Seeder
     public function run()
     {
         Customer::insert([
-            'meter_no'      => rand(10000000000, 99999999999),
-            'customer_id'   => rand(10000000000, 99999999999),
+            'meter_no'      => 12345678901,
+            'customer_id'   => 12398921234,
             'name'          => 'Ida Bagus Komang Darma Wiryanata',
             'address'       => 'Denpasar',
             'phone'         => '085339234034',
@@ -27,8 +27,8 @@ class CustomerSeeder extends Seeder
         ]);
 
         Customer::insert([
-            'meter_no'      => rand(10000000000, 99999999999),
-            'customer_id'   => rand(10000000000, 99999999999),
+            'meter_no'      => 11237490213,
+            'customer_id'   => 23748234693,
             'name'          => 'Ida Bagus Kadek Darma Wiryatama',
             'address'       => 'Denpasar',
             'phone'         => '085156671663',
