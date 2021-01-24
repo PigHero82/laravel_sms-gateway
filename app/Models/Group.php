@@ -10,7 +10,7 @@ class Group extends Model
     use HasFactory;
 
     protected $table = 'groups';
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['title', 'description'];
 
     static function firstGroup($id)
     {
@@ -47,7 +47,7 @@ class Group extends Model
         
         if ($group->isNotEmpty()) {
             foreach ($group as $key => $value) {
-                $data[$key] = Group::select('id', 'name')->firstWhere($value->id);
+                $data[$key] = Group::select('id', 'title')->firstWhere($value->id);
                 $data[$key]['numbers_of_member'] = count($data[$key]['member']);
             }
 

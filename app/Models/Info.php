@@ -10,15 +10,15 @@ class Info extends Model
     use HasFactory;
 
     protected $table = 'info';
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['title', 'description'];
 
-    static function firstInfo($name)
+    static function firstInfo($title)
     {
-        return Info::firstWhere('name', $name);
+        return Info::firstWhere('title', $title);
     }
 
-    static function updateInfo($name, $description)
+    static function updateInfo($title, $description)
     {
-        Info::where('name', $name)->update(['description' => $description]);
+        Info::where('title', $title)->update(['description' => $description]);
     }
 }
