@@ -27,6 +27,11 @@ class Template extends Model
         return Template::all();
     }
 
+    static function miniGetTemplate()
+    {
+        return Template::select('id', 'title')->get();
+    }
+
     static function storeTemplate($request)
     {
         Template::create([

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Customer;
 use App\Models\SMS;
+use App\Models\Template;
 use Config;
 use Illuminate\Http\Request;
 
@@ -60,7 +61,8 @@ class SMSController extends Controller
     public function index()
     {
         $customer = Customer::miniGetCustomer();
+        $template = Template::miniGetTemplate();
 
-        return view('pages.home.pesan', compact('customer'));
+        return view('pages.home.pesan', compact('customer', 'template'));
     }
 }

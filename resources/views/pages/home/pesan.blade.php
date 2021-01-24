@@ -31,7 +31,7 @@
     
     <form action="{{ route('sms.send') }}" method="post">
         @csrf
-        <!-- Card Statistic -->
+        <!-- Receiever -->
         <section>
             <x-input-form label="Penerima">
                 <select name="customer_id" class="form-control">
@@ -42,16 +42,44 @@
                 </select>
             </x-input-form>
         </section>
-        <!--/ Card Statistic -->
+        <!--/ Receiever -->
+
+        <!-- Template -->
+        <section>
+            <x-input-form label="Template">
+                <select name="template" class="form-control" id="template">
+                    <option value="" hidden>--Pilih template</option>
+                    @foreach ($template as $item)
+                        <option value="{{ $item->id }}">{{ $item->title }}</option>
+                    @endforeach
+                </select>
+            </x-input-form>
+        </section>
+        <!--/ Template -->
 
         <!-- Message -->
         <section>
             <x-input-form label="Tulis Pesan">
-                <textarea class="form-control" name="message" cols="30" rows="5" placeholder="Tulis Pesan"></textarea>
+                <textarea class="form-control" name="message" id="message" cols="30" rows="5" placeholder="Tulis Pesan"></textarea>
             </x-input-form>
         </section>
         <!--/ Message -->
         
         <button type="submit" class="btn btn-primary">Kirim</button>
     </form>
+@endsection
+
+@section('js')
+    <script>
+        $(document).ready(function() {
+            $('#template').change(function () {
+                id = $('#template option:selected').val()
+                
+                $.get("/template/" + id, function( data ) {
+                    var d = JSON.parse(data);
+                    $('#message').val(d.message);
+                });
+            })
+        });
+    </script>
 @endsection
