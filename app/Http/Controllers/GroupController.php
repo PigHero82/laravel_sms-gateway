@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
 use App\Models\Group;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,10 @@ class GroupController extends Controller
      */
     public function index()
     {
-        //
+        $customer = Customer::miniGetCustomer();
+        $group = Group::miniGetGroup();
+
+        return view('pages.pengaturan.kontak.grup-kontak', compact('customer', 'group'));
     }
 
     /**
@@ -35,7 +39,13 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'         => 'required',
+            'customer_id'   => 'required'
+        ]);
+
+        Group::storeGroup($request);
+        return back()->with('success', 'Grup pelanggan berhasil disimpan');
     }
 
     /**
@@ -44,9 +54,9 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $group)
+    public function show($id)
     {
-        //
+        return json_encode(Group::firstGroup($id));
     }
 
     /**
@@ -67,9 +77,15 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title'         => 'required',
+            'customer_id'   => 'required'
+        ]);
+
+        Group::updateGroup($id, $request);
+        return back()->with('success', 'Grup pelanggan berhasil diubah');
     }
 
     /**
@@ -78,8 +94,9 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $group
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $group)
+    public function destroy($id)
     {
-        //
+        Group::destroyGroup($id);
+        return back()->with('success', 'Grup pelanggan berhasil dihapus');
     }
 }

@@ -12,14 +12,21 @@ class Group extends Model
     protected $table = 'groups';
     protected $fillable = ['title', 'description'];
 
+    static function destroyGroup($id)
+    {
+        GroupMember::destroyGroup($id);
+        Group::whereId($id)->delete();
+    }
+
     static function firstGroup($id)
     {
         $data = Group::findOrFail($id);
-
-        if ($data->isNotEmpty()) {
-            $data['numbers_of_member'] = count($data['member']);
-            $data['member'] = GroupMember::where('group_id', $id)->get();
-        }
+        $data['numbers_of_member'] = 0;
+        $data['member'] = GroupMember::select('group_members.id', 'group_members.customer_id', 'customers.name')
+                                        ->join('customers', 'group_members.customer_id', 'customers.customer_id')
+                                        ->where('group_members.group_id', $id)
+                                        ->get();
+        $data['numbers_of_member'] = count($data['member']);
 
         return $data;
     }
@@ -47,13 +54,36 @@ class Group extends Model
         
         if ($group->isNotEmpty()) {
             foreach ($group as $key => $value) {
-                $data[$key] = Group::select('id', 'title')->firstWhere($value->id);
-                $data[$key]['numbers_of_member'] = count($data[$key]['member']);
+                $data[$key] = Group::select('id', 'title')->whereId($value->id)->first();
+                $numbersOfMember = GroupMember::select('id')
+                                                ->where('group_id', $value->id)
+                                                ->get();
+                $data[$key]['numbers_of_member'] = count($numbersOfMember);
             }
 
             return $data;
         }
 
         return $group;
+    }
+
+    static function storeGroup($request)
+    {
+        $group = Group::create([
+            'title'         => $request->title,
+            'description'   => $request->description
+        ]);
+
+        GroupMember::storeGroupMember($group->id, $request->customer_id);
+    }
+
+    static function updateGroup($id, $request)
+    {
+        $group = Group::whereId($id)->update([
+            'title'         => $request->title,
+            'description'   => $request->description
+        ]);
+
+        GroupMember::updateGroupMember($id, $request->customer_id);
     }
 }
