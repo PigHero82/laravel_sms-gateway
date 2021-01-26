@@ -47,11 +47,15 @@
                     <!-- Receiever -->
                     <section>
                         <x-input-form label="Penerima">
-                            <select name="customer_id" class="form-control">
-                                <option value="" hidden>--Pilih pelanggan</option>
-                                @foreach ($customer as $item)
-                                    <option value="{{ $item->customer_id }}">{{ $item->name . ' - ' . $item->phone }}</option>
-                                @endforeach
+                            <select name="customer_id" class="form-control" required>
+                                @if (count($customer))
+                                    <option value="" hidden>--Pilih pelanggan</option>
+                                    @foreach ($customer as $item)
+                                        <option value="{{ $item->customer_id }}">{{ $item->name . ' - ' . $item->phone }}</option>
+                                    @endforeach
+                                @else
+                                    <option value="">Data pelanggan kosong</option>
+                                @endif
                             </select>
                         </x-input-form>
                     </section>
@@ -60,11 +64,15 @@
                     <!-- Template -->
                     <section>
                         <x-input-form label="Template">
-                            <select name="template" class="form-control" id="template">
-                                <option value="" hidden>--Pilih template</option>
-                                @foreach ($template as $item)
-                                    <option value="{{ $item->id }}">{{ $item->title }}</option>
-                                @endforeach
+                            <select name="template" class="form-control" id="messageTemplate">
+                                @if (count($template))
+                                    <option value="" hidden>--Pilih template</option>
+                                    @foreach ($template as $item)
+                                        <option value="{{ $item->id }}">{{ $item->title }}</option>
+                                    @endforeach
+                                @else
+                                    <option value="">Data template kosong</option>
+                                @endif
                             </select>
                         </x-input-form>
                     </section>
@@ -73,7 +81,9 @@
                     <!-- Message -->
                     <section>
                         <x-input-form label="Tulis Pesan">
-                            <textarea class="form-control" name="message" id="message" cols="30" rows="5" placeholder="Tulis Pesan"></textarea>
+                            <p class="font-small-1 mb-0">Atribut yang dapat digunakan:</p>
+                            <p><code>[no_meter]</code> <code>[id_pelanggan]</code> <code>[nama]</code> <code>[alamat]</code> <code>[no_telepon]</code></p>
+                            <textarea class="form-control" name="message" id="messageMessage" cols="30" rows="5" placeholder="Tulis Pesan" required></textarea>
                         </x-input-form>
                     </section>
                     <!--/ Message -->
@@ -82,44 +92,70 @@
                 </form>
             </div>
             <div class="tab-pane fade" id="grup" role="tabpanel" aria-labelledby="grup-tab">
-                <form action="{{ route('sms.send') }}" method="post">
-                    @csrf
-                    <!-- Receiever -->
-                    <section>
-                        <x-input-form label="Penerima">
-                            <select name="customer_id" class="form-control">
-                                <option value="" hidden>--Pilih pelanggan</option>
-                                @foreach ($customer as $item)
-                                    <option value="{{ $item->customer_id }}">{{ $item->name . ' - ' . $item->phone }}</option>
-                                @endforeach
-                            </select>
-                        </x-input-form>
-                    </section>
-                    <!--/ Receiever -->
-            
-                    <!-- Template -->
-                    <section>
-                        <x-input-form label="Template">
-                            <select name="template" class="form-control" id="template">
-                                <option value="" hidden>--Pilih template</option>
-                                @foreach ($template as $item)
-                                    <option value="{{ $item->id }}">{{ $item->title }}</option>
-                                @endforeach
-                            </select>
-                        </x-input-form>
-                    </section>
-                    <!--/ Template -->
-            
-                    <!-- Message -->
-                    <section>
-                        <x-input-form label="Tulis Pesan">
-                            <textarea class="form-control" name="message" id="message" cols="30" rows="5" placeholder="Tulis Pesan"></textarea>
-                        </x-input-form>
-                    </section>
-                    <!--/ Message -->
+                <div class="row">
+                    <div class="col col-md-8">
+                        <form action="{{ route('sms.group') }}" method="post">
+                            @csrf
+                            <!-- Receiever -->
+                            <section>
+                                <x-input-form label="Penerima">
+                                    <select name="group_id" class="form-control" id="group" required>
+                                        @if (count($group))
+                                            <option value="" hidden>--Pilih grup pelanggan</option>
+                                            @foreach ($group as $item)
+                                                <option value="{{ $item->id }}">{{ $item->title . ' - ' . $item->numbers_of_member . ' pelanggan' }}</option>
+                                            @endforeach
+                                        @else
+                                            <option value="">Data pelanggan kosong</option>
+                                        @endif
+                                    </select>
+                                </x-input-form>
+                            </section>
+                            <!--/ Receiever -->
                     
-                    <button type="submit" class="btn btn-primary">Kirim</button>
-                </form>
+                            <!-- Template -->
+                            <section>
+                                <x-input-form label="Template">
+                                    <select name="template" class="form-control" id="groupTemplate">
+                                        <option value="" hidden>--Pilih template</option>
+                                        @foreach ($template as $item)
+                                            <option value="{{ $item->id }}">{{ $item->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </x-input-form>
+                            </section>
+                            <!--/ Template -->
+                    
+                            <!-- Message -->
+                            <section>
+                                <x-input-form label="Tulis Pesan">
+                                    <p class="font-small-1 mb-0">Atribut yang dapat digunakan:</p>
+                                    <p><code>[no_meter]</code> <code>[id_pelanggan]</code> <code>[nama]</code> <code>[alamat]</code> <code>[no_telepon]</code></p>
+                                    <textarea class="form-control" name="message" id="groupMessage" cols="30" rows="5" placeholder="Tulis Pesan" required></textarea>
+                                </x-input-form>
+                            </section>
+                            <!--/ Message -->
+                            
+                            <button type="submit" class="btn btn-primary">Kirim</button>
+                        </form>
+                    </div>
+                    <div class="col col-md-4 hidden" id="groupCol">
+                        <h4 class="mt-2 mt-md-0" id="groupTitle"></h4>
+                        <p id="groupDescription"></p>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="groupTable">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>No. Telepon</th>
+                                        <th>Nama</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </x-tab>
     </x-card-basic>
@@ -128,14 +164,39 @@
 @section('js')
     <script>
         $(document).ready(function() {
-            $('#template').change(function () {
-                id = $('#template option:selected').val()
-                
+            $('#messageTemplate').change(function () {
+                let id = $('#messageTemplate option:selected').val()
                 $.get("/template/" + id, function( data ) {
                     var d = JSON.parse(data);
-                    $('#message').val(d.message);
+                    $('#messageMessage').val(d.message);
                 });
-            })
+            });
+
+            $('#groupTemplate').change(function () {
+                let id = $('#groupTemplate option:selected').val()
+                $.get("/template/" + id, function( data ) {
+                    var d = JSON.parse(data);
+                    $('#groupMessage').val(d.message);
+                });
+            });
+
+            $('#group').change(function () {
+                let id = $('#group option:selected').val()
+                $.get("/grup-kontak/" + id, function( data ) {
+                    var d = JSON.parse(data);
+                    console.log(d)
+                    $('#groupCol').removeClass('hidden');
+                    $('#groupTitle').text('');
+                    $('#groupTitle').text(d.title);
+                    $('#groupDescription').text('');
+                    $('#groupDescription').text(d.description);
+                    $('#groupTable tbody tr').remove();
+                    for (let index = 0; index < d.member.length; index++) {
+                        i = index+1
+                        $('#groupTable > tbody').append('<tr><td>' + i + '</td><td>' + d.member[index].phone + '</td><td>' + d.member[index].name + '</td></tr>');
+                    }
+                });
+            });
         });
     </script>
 @endsection

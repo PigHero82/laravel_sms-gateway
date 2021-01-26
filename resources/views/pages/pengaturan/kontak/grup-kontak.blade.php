@@ -155,19 +155,6 @@
             </div>
         </form>
     </x-modal>
-
-    {{-- Modal
-    <x-modal id="modalEditGroup" title="Grup Baru" class="">
-        <div class="modal-body">
-            <x-input-form label="Nama">
-                <input type="text" class="form-control" name="" id="" placeholder="Nama">
-            </x-input-form>
-        </div>
-
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Submit</button>
-        </div>
-    </x-modal> --}}
 @endsection
 
 @section('js')
@@ -189,11 +176,8 @@
 
             $(document).on('click', '.modal-popup', function () {
                 let id = $(this).attr('data-value')
-
-                
                 $.get("/grup-kontak/" + id, function( data ) {
                     var d = JSON.parse(data);
-                    console.log(d)
                     $("#formEditGroup").attr("action", "{{ url('/grup-kontak') }}/" + d.id);
                     $('#titleEditGroup').val(d.title);
                     $('#descriptionEditGroup').val(d.description);

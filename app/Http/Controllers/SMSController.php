@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Group;
 use App\Models\SMS;
 use App\Models\Template;
 use Config;
@@ -58,11 +59,47 @@ class SMSController extends Controller
         }
     }
 
+    public function group(Request $request)
+    {
+        $request->validate([
+            'message'   => 'required',
+            'group_id'  => 'required|numeric'
+        ]);
+
+        $group = Group::firstGroup($request->group_id);
+
+        foreach ($group['member'] as $key => $value) {
+            $message = $request->message;
+            $message = (strpos($message, '[no_meter]') !== false) ? str_replace('[no_meter]', $value['meter_no'], $message) : $message ;
+            $message = (strpos($message, '[id_pelanggan]') !== false) ? str_replace('[id_pelanggan]', $value['customer_id'], $message) : $message ;
+            $message = (strpos($message, '[nama]') !== false) ? str_replace('[nama]', $value['name'], $message) : $message ;
+            $message = (strpos($message, '[alamat]') !== false) ? str_replace('[alamat]', $value['address'], $message) : $message ;
+            $message = (strpos($message, '[no_telepon]') !== false) ? str_replace('[no_telepon]', $value['phone'], $message) : $message ;
+    
+            $response = SMS::send($this->userKey, $this->passKey, $value['phone'], $message);
+            $statusCode = $response->getStatusCode();
+            $content = $response->getBody();
+        }
+        
+        SMS::updateCredit($this->userKey, $this->passKey);
+
+        if ($statusCode == 200 || $statusCode == 201) {
+            if ($response['status'] == 1) {
+                return back()->with('success', 'Pesan terkirim ke ' . $group->title);
+            } else {
+                return $response;
+            }
+        } else {
+            return $response;
+        }
+    }
+
     public function index()
     {
         $customer = Customer::miniGetCustomer();
+        $group = Group::miniGetGroup();
         $template = Template::miniGetTemplate();
 
-        return view('pages.home.pesan', compact('customer', 'template'));
+        return view('pages.home.pesan', compact('customer', 'group', 'template'));
     }
 }

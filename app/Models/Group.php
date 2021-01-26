@@ -22,7 +22,7 @@ class Group extends Model
     {
         $data = Group::findOrFail($id);
         $data['numbers_of_member'] = 0;
-        $data['member'] = GroupMember::select('group_members.id', 'group_members.customer_id', 'customers.name')
+        $data['member'] = GroupMember::select('group_members.id', 'group_members.customer_id', 'customers.*')
                                         ->join('customers', 'group_members.customer_id', 'customers.customer_id')
                                         ->where('group_members.group_id', $id)
                                         ->get();
