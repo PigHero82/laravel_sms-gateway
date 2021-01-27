@@ -10,7 +10,7 @@ class Outbox extends Model
     use HasFactory;
 
     protected $table = 'outboxes';
-    protected $fillable = ['customer_id', 'phone', 'message'];
+    protected $fillable = ['customer_id', 'phone', 'message', 'status'];
 
     static function firstOutbox($id)
     {

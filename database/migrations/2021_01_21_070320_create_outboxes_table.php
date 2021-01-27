@@ -18,6 +18,7 @@ class CreateOutboxesTable extends Migration
             $table->string('customer_id', 15);
             $table->string('phone', 20);
             $table->text('message');
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

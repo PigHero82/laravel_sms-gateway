@@ -10,7 +10,7 @@ class Template extends Model
     use HasFactory;
 
     protected $table = 'templates';
-    protected $fillable = ['title', 'message'];
+    protected $fillable = ['title', 'message', 'status'];
 
     static function destroyTemplate($id)
     {

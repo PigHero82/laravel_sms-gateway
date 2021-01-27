@@ -17,6 +17,7 @@ class CreateTemplatesTable extends Migration
             $table->id();
             $table->string('title', 100);
             $table->text('message');
+            $table->boolean('status')->default(1);
             $table->timestamps();
         });
     }

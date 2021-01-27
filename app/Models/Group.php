@@ -10,7 +10,7 @@ class Group extends Model
     use HasFactory;
 
     protected $table = 'groups';
-    protected $fillable = ['title', 'description'];
+    protected $fillable = ['title', 'description', 'status'];
 
     static function destroyGroup($id)
     {
@@ -50,7 +50,9 @@ class Group extends Model
 
     static function miniGetGroup()
     {
-        $group = Group::select('id')->get();
+        $group = Group::select('id')
+                        ->where('status', 1)
+                        ->get();
         
         if ($group->isNotEmpty()) {
             foreach ($group as $key => $value) {
@@ -81,7 +83,8 @@ class Group extends Model
     {
         $group = Group::whereId($id)->update([
             'title'         => $request->title,
-            'description'   => $request->description
+            'description'   => $request->description,
+            'status'        => $request->status
         ]);
 
         GroupMember::updateGroupMember($id, $request->customer_id);
