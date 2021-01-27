@@ -16,7 +16,7 @@ class GroupController extends Controller
     public function index()
     {
         $customer = Customer::miniGetCustomer();
-        $group = Group::miniGetGroup();
+        $group = Group::getGroup();
 
         return view('pages.pengaturan.kontak.grup-kontak', compact('customer', 'group'));
     }
@@ -81,6 +81,7 @@ class GroupController extends Controller
     {
         $request->validate([
             'title'         => 'required',
+            'status'        => 'required|numeric',
             'customer_id'   => 'required'
         ]);
 

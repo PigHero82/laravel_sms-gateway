@@ -46,6 +46,7 @@
                     <th>No</th>
                     <th>Grup</th>
                     <th>Jumlah Pelanggan</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -55,6 +56,13 @@
                         <td>{{ $loop->iteration }}</td>
                         <td><a href="#modalEditGroup" class="modal-popup" data-toggle="modal" data-value="{{ $item->id }}">{{ $item->title }}</a></td>
                         <td>{{ $item->numbers_of_member }}</td>
+                        <td>
+                            @if ($item->status == 1)
+                                <h4><i class="feather icon-eye text-primary"></i></h4>
+                            @elseif ($item->status == 0)
+                                <h4><i class="feather icon-eye-off"></i></h4>
+                            @endif
+                        </td>
                         <td>
                             <form action="{{ route('grup-kontak.destroy', $item->id)}}" method="post" onsubmit="return confirm('Apakah Anda yakin ingin menghapus {{ $item->title }}');">
                                 @csrf
@@ -126,6 +134,34 @@
                     <input type="text" class="form-control" name="description" id="descriptionEditGroup" placeholder="Deskripsi">
                 </x-input-form>
     
+                <x-input-form label="Status">
+                    <br>
+                    <li class="d-inline-block mr-2">
+                        <fieldset>
+                            <div class="vs-radio-con">
+                                <input type="radio" name="status" id="statusEditGroup1" value="1">
+                                <span class="vs-radio">
+                                    <span class="vs-radio--border"></span>
+                                    <span class="vs-radio--circle"></span>
+                                </span>
+                                <span class="">Aktif</span>
+                            </div>
+                        </fieldset>
+                    </li>
+                    <li class="d-inline-block mr-2">
+                        <fieldset>
+                            <div class="vs-radio-con">
+                                <input type="radio" name="status" id="statusEditGroup0" value="0">
+                                <span class="vs-radio">
+                                    <span class="vs-radio--border"></span>
+                                    <span class="vs-radio--circle"></span>
+                                </span>
+                                <span class="">Tidak aktif</span>
+                            </div>
+                        </fieldset>
+                    </li>
+                </x-input-form>
+    
                 <x-input-form label="Anggota">
                     <table class="table table-striped modal-table">
                         <thead>
@@ -163,6 +199,9 @@
     <script>
         $(document).ready( function () {
             $('#groupTable').DataTable({
+                columnDefs: [
+                    { orderable: false, targets: 3 },
+                ],
                 initComplete: function() {
                     $(this.api().table().container()).find('input').parent().wrap('<form>').parent().attr('autocomplete', 'off');
                 }
@@ -181,6 +220,13 @@
                     $("#formEditGroup").attr("action", "{{ url('/grup-kontak') }}/" + d.id);
                     $('#titleEditGroup').val(d.title);
                     $('#descriptionEditGroup').val(d.description);
+                    $('#statusEditGroup0').attr('checked', false);
+                    $('#statusEditGroup1').attr('checked', false);
+                    if (d.status == 0) {
+                        $('#statusEditGroup0').attr('checked', true);
+                    } else if (d.status == 1) {
+                        $('#statusEditGroup1').attr('checked', true);
+                    }
                     $('.checkbox').attr('checked', false);
                     for (let index = 0; index < d.member.length; index++) {
                         $('#member-'+ d['member'][index].customer_id).attr('checked', true);

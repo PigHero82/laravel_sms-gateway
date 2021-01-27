@@ -38,8 +38,9 @@ class Group extends Model
         if ($group->isNotEmpty()) {
             foreach ($group as $key => $value) {
                 $data[$key] = Group::findOrFail($value->id);
-                $data[$key]['numbers_of_member'] = count($data[$key]['member']);
+                $data[$key]['numbers_of_member'] = 0;
                 $data[$key]['member'] = GroupMember::where('group_id', $value->id)->get();
+                $data[$key]['numbers_of_member'] = count($data[$key]['member']);
             }
 
             return $data;

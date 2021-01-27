@@ -64,16 +64,16 @@
                     <!-- Template -->
                     <section>
                         <x-input-form label="Template">
-                            <select name="template" class="form-control" id="messageTemplate">
-                                @if (count($template))
+                            @if (count($template))
+                                <select name="template" class="form-control" id="messageTemplate">
                                     <option value="" hidden>--Pilih template</option>
                                     @foreach ($template as $item)
                                         <option value="{{ $item->id }}">{{ $item->title }}</option>
                                     @endforeach
-                                @else
-                                    <option value="">Data template kosong</option>
-                                @endif
-                            </select>
+                                </select>
+                            @else
+                                <input type="text" class="form-control" value="Data pelanggan kosong" disabled>
+                            @endif
                         </x-input-form>
                     </section>
                     <!--/ Template -->
@@ -87,8 +87,12 @@
                         </x-input-form>
                     </section>
                     <!--/ Message -->
-                    
-                    <button type="submit" class="btn btn-primary">Kirim</button>
+                            
+                    @if (count($group))
+                        <button type="submit" class="btn btn-primary">Kirim</button>
+                    @else
+                        <button type="submit" class="btn btn-outline-primary" disabled>Kirim</button>
+                    @endif
                 </form>
             </div>
             <div class="tab-pane fade" id="grup" role="tabpanel" aria-labelledby="grup-tab">
@@ -99,16 +103,16 @@
                             <!-- Receiever -->
                             <section>
                                 <x-input-form label="Penerima">
-                                    <select name="group_id" class="form-control" id="group" required>
-                                        @if (count($group))
+                                    @if (count($group))
+                                        <select name="group_id" class="form-control" id="group" required>
                                             <option value="" hidden>--Pilih grup pelanggan</option>
                                             @foreach ($group as $item)
                                                 <option value="{{ $item->id }}">{{ $item->title . ' - ' . $item->numbers_of_member . ' pelanggan' }}</option>
                                             @endforeach
-                                        @else
-                                            <option value="">Data pelanggan kosong</option>
-                                        @endif
-                                    </select>
+                                        </select>
+                                    @else
+                                        <input type="text" class="form-control" value="Data grup pelanggan kosong" disabled>
+                                    @endif
                                 </x-input-form>
                             </section>
                             <!--/ Receiever -->
@@ -136,7 +140,11 @@
                             </section>
                             <!--/ Message -->
                             
-                            <button type="submit" class="btn btn-primary">Kirim</button>
+                            @if (count($group))
+                                <button type="submit" class="btn btn-primary">Kirim</button>
+                            @else
+                                <button type="submit" class="btn btn-outline-primary" disabled>Kirim</button>
+                            @endif
                         </form>
                     </div>
                     <div class="col col-md-4 hidden" id="groupCol">
