@@ -42,20 +42,21 @@
                   </li>
             </x-slot>
             <div class="tab-pane fade show active" id="pesan" role="tabpanel" aria-labelledby="pesan-tab">
-                <form action="{{ route('sms.send') }}" method="post">
+                <form action="{{ route('pesan.store') }}" method="post">
                     @csrf
                     <!-- Receiever -->
                     <section>
                         <x-input-form label="Penerima">
-                            <select name="customer_id" class="form-control" required>
-                                @if (count($customer))
+                            @if (count($customer))
+                                <select name="customer_id" class="form-control" required>
                                     <option value="" hidden>--Pilih pelanggan</option>
                                     @foreach ($customer as $item)
                                         <option value="{{ $item->customer_id }}">{{ $item->name . ' - ' . $item->phone }}</option>
                                     @endforeach
-                                @else
-                                    <option value="">Data pelanggan kosong</option>
-                                @endif
+                                </select>
+                            @else
+                                <input type="text" class="form-control" value="Data template kosong" disabled>
+                            @endif
                             </select>
                         </x-input-form>
                     </section>
@@ -72,7 +73,7 @@
                                     @endforeach
                                 </select>
                             @else
-                                <input type="text" class="form-control" value="Data pelanggan kosong" disabled>
+                                <input type="text" class="form-control" value="Data template kosong" disabled>
                             @endif
                         </x-input-form>
                     </section>
@@ -89,7 +90,7 @@
                     <!--/ Message -->
                             
                     @if (count($group))
-                        <button type="submit" class="btn btn-primary">Kirim</button>
+                        <button type="submit" class="btn btn-primary" name="type" value="1">Kirim</button>
                     @else
                         <button type="submit" class="btn btn-outline-primary" disabled>Kirim</button>
                     @endif
@@ -98,7 +99,7 @@
             <div class="tab-pane fade" id="grup" role="tabpanel" aria-labelledby="grup-tab">
                 <div class="row">
                     <div class="col col-md-8">
-                        <form action="{{ route('sms.group') }}" method="post">
+                        <form action="{{ route('pesan.store') }}" method="post">
                             @csrf
                             <!-- Receiever -->
                             <section>
@@ -120,12 +121,16 @@
                             <!-- Template -->
                             <section>
                                 <x-input-form label="Template">
-                                    <select name="template" class="form-control" id="groupTemplate">
-                                        <option value="" hidden>--Pilih template</option>
-                                        @foreach ($template as $item)
-                                            <option value="{{ $item->id }}">{{ $item->title }}</option>
-                                        @endforeach
-                                    </select>
+                                    @if (count($template))
+                                        <select name="template" class="form-control" id="groupTemplate">
+                                            <option value="" hidden>--Pilih template</option>
+                                            @foreach ($template as $item)
+                                                <option value="{{ $item->id }}">{{ $item->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <input type="text" class="form-control" value="Data template kosong" disabled>
+                                    @endif
                                 </x-input-form>
                             </section>
                             <!--/ Template -->
@@ -141,7 +146,7 @@
                             <!--/ Message -->
                             
                             @if (count($group))
-                                <button type="submit" class="btn btn-primary">Kirim</button>
+                                <button type="submit" class="btn btn-primary" name="type" value="2">Kirim</button>
                             @else
                                 <button type="submit" class="btn btn-outline-primary" disabled>Kirim</button>
                             @endif
@@ -205,6 +210,51 @@
                     }
                 });
             });
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var elements = document.getElementsByTagName("INPUT");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].oninvalid = function(e) {
+                    e.target.setCustomValidity("");
+                    if (!e.target.validity.valid) {
+                        e.target.setCustomValidity("Kolom ini tidak boleh kosong");
+                    }
+                };
+                elements[i].oninput = function(e) {
+                    e.target.setCustomValidity("");
+                };
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var elements = document.getElementsByTagName("TEXTAREA");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].oninvalid = function(e) {
+                    e.target.setCustomValidity("");
+                    if (!e.target.validity.valid) {
+                        e.target.setCustomValidity("Kolom ini tidak boleh kosong");
+                    }
+                };
+                elements[i].oninput = function(e) {
+                    e.target.setCustomValidity("");
+                };
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var elements = document.getElementsByTagName("SELECT");
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].oninvalid = function(e) {
+                    e.target.setCustomValidity("");
+                    if (!e.target.validity.valid) {
+                        e.target.setCustomValidity("Pilih salah satu item pada kolom ini");
+                    }
+                };
+                elements[i].oninput = function(e) {
+                    e.target.setCustomValidity("");
+                };
+            }
         });
     </script>
 @endsection

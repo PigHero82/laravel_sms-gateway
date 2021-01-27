@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+use App\Models\Group;
 use App\Models\Outbox;
 use Illuminate\Http\Request;
 
@@ -14,7 +16,8 @@ class OutboxController extends Controller
      */
     public function index()
     {
-        // 
+        $outboxes = Outbox::getOutbox();
+        return view('pages.pesan.sms-keluar', compact('outboxes'));
     }
 
     /**
@@ -35,7 +38,49 @@ class OutboxController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(['type' => 'required|numeric']);
+        $type = $request->type;
+
+        if ($type == 1) {
+            $request->validate([
+                'message'       => 'required',
+                'customer_id'   => 'required|numeric'
+            ]);
+    
+            $customer = Customer::firstCustomer($request->customer_id);
+    
+            $message = $request->message;
+            $message = (strpos($message, '[no_meter]') !== false) ? str_replace('[no_meter]', $customer->meter_no, $message) : $message ;
+            $message = (strpos($message, '[id_pelanggan]') !== false) ? str_replace('[id_pelanggan]', $customer->customer_id, $message) : $message ;
+            $message = (strpos($message, '[nama]') !== false) ? str_replace('[nama]', $customer->name, $message) : $message ;
+            $message = (strpos($message, '[alamat]') !== false) ? str_replace('[alamat]', $customer->address, $message) : $message ;
+            $message = (strpos($message, '[no_telepon]') !== false) ? str_replace('[no_telepon]', $customer->phone, $message) : $message ;
+
+            Outbox::storeOutbox($customer->customer_id, $customer->phone, $message);
+            return redirect()->route('pesan.index')->with('success', 'Sedang mengirim pesan');
+
+        } else if ($type == 2) {
+            $request->validate([
+                'message'   => 'required',
+                'group_id'  => 'required|numeric'
+            ]);
+    
+            $group = Group::firstGroup($request->group_id);
+    
+            foreach ($group['member'] as $key => $value) {
+                $message = $request->message;
+                $message = (strpos($message, '[no_meter]') !== false) ? str_replace('[no_meter]', $value['meter_no'], $message) : $message ;
+                $message = (strpos($message, '[id_pelanggan]') !== false) ? str_replace('[id_pelanggan]', $value['customer_id'], $message) : $message ;
+                $message = (strpos($message, '[nama]') !== false) ? str_replace('[nama]', $value['name'], $message) : $message ;
+                $message = (strpos($message, '[alamat]') !== false) ? str_replace('[alamat]', $value['address'], $message) : $message ;
+                $message = (strpos($message, '[no_telepon]') !== false) ? str_replace('[no_telepon]', $value['phone'], $message) : $message ;
+        
+                Outbox::storeOutbox($value['customer_id'], $value['phone'], $message);
+            }
+
+            return redirect()->route('pesan.index')->with('success', 'Sedang mengirim pesan');
+        }
+        
     }
 
     /**
@@ -44,9 +89,9 @@ class OutboxController extends Controller
      * @param  \App\Models\Outbox  $outbox
      * @return \Illuminate\Http\Response
      */
-    public function show(Outbox $outbox)
+    public function show($id)
     {
-        //
+        return json_encode(Outbox::firstOutbox($id));
     }
 
     /**

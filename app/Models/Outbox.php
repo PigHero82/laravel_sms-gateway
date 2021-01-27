@@ -16,7 +16,7 @@ class Outbox extends Model
     {
         return Outbox::select('outboxes.*', 'customers.name')
                         ->join('customers', 'outboxes.customer_id', 'customers.customer_id')
-                        ->whereId($id)
+                        ->where('outboxes.id', $id)
                         ->first();
     }
 
@@ -31,6 +31,16 @@ class Outbox extends Model
     {
         return Outbox::select('outboxes.id', 'customers.name', 'outboxes.message')
                         ->join('customers', 'outboxes.customer_id', 'customers.customer_id')
+                        ->where('status', 1)
                         ->get();
+    }
+
+    static function storeOutbox($customerId, $phone, $message)
+    {
+        Outbox::create([
+            'customer_id'   => $customerId,
+            'phone'         => $phone,
+            'message'       => $message,
+        ]);
     }
 }

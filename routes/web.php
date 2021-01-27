@@ -36,7 +36,7 @@ Route::name('sms.')->prefix('sms')->group(function () {
 
 Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::resource('kontak', CustomerController::class);
-Route::resource('pesan', OutboxController::class);
+Route::resource('pesan', OutboxController::class)->except(['update', 'destroy']);
 Route::resource('template', TemplateController::class);
 Route::resource('grup-kontak', GroupController::class);
 
