@@ -16,7 +16,7 @@ class InfoSeeder extends Seeder
     {
         Info::insert([
             'title'         => 'credit',
-            'description'   => '5000',
+            'description'   => '2000',
             'created_at'    => now(),
             'updated_at'    => now()
         ]);

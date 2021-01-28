@@ -15,7 +15,7 @@ class CreateOutboxesTable extends Migration
     {
         Schema::create('outboxes', function (Blueprint $table) {
             $table->id();
-            $table->string('customer_id', 15);
+            $table->string('meter_id', 15);
             $table->string('phone', 20);
             $table->text('message');
             $table->boolean('status')->default(0);

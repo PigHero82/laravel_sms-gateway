@@ -10,17 +10,17 @@ class Customer extends Model
     use HasFactory;
 
     protected $table = 'customers';
-    protected $fillable = ['meter_no', 'customer_id', 'name', 'address', 'phone', 'type', 'status'];
+    protected $fillable = ['meter_id', 'name', 'address', 'phone', 'status'];
 
-    static function destroyCustomer($customerId)
+    static function destroyCustomer($meterId)
     {
-        GroupMember::destroyGroupMember($customerId);
-        Customer::where('customer_id', $customerId)->delete();
+        GroupMember::destroyGroupMember($meterId);
+        Customer::where('meter_id', $meterId)->delete();
     }
 
-    static function firstCustomer($customerId)
+    static function firstCustomer($meterId)
     {
-        return Customer::firstWhere('customer_id', $customerId);
+        return Customer::firstWhere('meter_id', $meterId);
     }
 
     static function getCustomer()
@@ -30,7 +30,7 @@ class Customer extends Model
 
     static function miniGetCustomer()
     {
-        return Customer::select('id', 'customer_id', 'name', 'phone')
+        return Customer::select('id', 'meter_id', 'name', 'phone')
                         ->where('status', 1)
                         ->get();
     }
@@ -38,11 +38,10 @@ class Customer extends Model
     static function storeCustomer($request)
     {
         Customer::create([
-            'meter_no'      => $request->meter_no,
-            'customer_id'   => $request->customer_id,
-            'name'          => $request->name,
-            'phone'         => $request->phone,
-            'address'       => $request->address
+            'meter_id'  => $request->meter_id,
+            'name'      => $request->name,
+            'phone'     => $request->phone,
+            'address'   => $request->address
         ]);
     }
 }

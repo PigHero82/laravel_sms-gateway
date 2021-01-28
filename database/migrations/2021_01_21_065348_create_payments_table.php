@@ -15,9 +15,13 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->string('customer_id', 15);
-            $table->float('used_energy', 3,2);
-            $table->decimal('charge', 10,2);
+            $table->string('meter_id', 15);
+            $table->float('last_month', 5,2);
+            $table->float('this_month', 5,2);
+            $table->float('usage', 5,2);
+            $table->decimal('tariff', 10,2);
+            $table->decimal('penalty', 10,2)->nullable();
+            $table->date('billing_month');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });

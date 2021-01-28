@@ -16,7 +16,7 @@ class CreateGroupMembersTable extends Migration
         Schema::create('group_members', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('group_id');
-            $table->string('customer_id', 15);
+            $table->string('meter_id', 15);
         });
     }
 

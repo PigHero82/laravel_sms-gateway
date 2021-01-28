@@ -15,12 +15,10 @@ class CreateCustomersTable extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
-            $table->string('meter_no', 15)->unique();
-            $table->string('customer_id', 15)->unique();
+            $table->string('meter_id', 15)->unique();
             $table->string('name', 100);
             $table->text('address');
             $table->string('phone', 20);
-            $table->boolean('type')->default(1);
             $table->boolean('status')->default(1);
             $table->timestamps();
         });

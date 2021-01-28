@@ -10,5 +10,5 @@ class Payment extends Model
     use HasFactory;
 
     protected $table = 'payments';
-    protected $fillable = ['customer_id', 'used_energy', 'charge', 'status'];
+    protected $fillable = ['meter_id', 'last_month', 'this_month', 'usage', 'tariff', 'penalty', 'billing_month', 'status'];
 }

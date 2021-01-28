@@ -10,12 +10,12 @@ class Outbox extends Model
     use HasFactory;
 
     protected $table = 'outboxes';
-    protected $fillable = ['customer_id', 'phone', 'message', 'status'];
+    protected $fillable = ['meter_id', 'phone', 'message', 'status'];
 
     static function firstOutbox($id)
     {
         return Outbox::select('outboxes.*', 'customers.name')
-                        ->join('customers', 'outboxes.customer_id', 'customers.customer_id')
+                        ->join('customers', 'outboxes.meter_id', 'customers.meter_id')
                         ->where('outboxes.id', $id)
                         ->first();
     }
@@ -23,24 +23,24 @@ class Outbox extends Model
     static function getOutbox()
     {
         return Outbox::select('outboxes.*', 'customers.name')
-                        ->join('customers', 'outboxes.customer_id', 'customers.customer_id')
+                        ->join('customers', 'outboxes.meter_id', 'customers.meter_id')
                         ->get();
     }
 
     static function miniGetOutbox()
     {
         return Outbox::select('outboxes.id', 'customers.name', 'outboxes.message')
-                        ->join('customers', 'outboxes.customer_id', 'customers.customer_id')
-                        ->where('status', 1)
+                        ->join('customers', 'outboxes.meter_id', 'customers.meter_id')
+                        ->where('outboxes.status', 1)
                         ->get();
     }
 
-    static function storeOutbox($customerId, $phone, $message)
+    static function storeOutbox($meterId, $phone, $message)
     {
         Outbox::create([
-            'customer_id'   => $customerId,
-            'phone'         => $phone,
-            'message'       => $message,
+            'meter_id'  => $meterId,
+            'phone'     => $phone,
+            'message'   => $message,
         ]);
     }
 }

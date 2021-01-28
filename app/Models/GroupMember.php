@@ -10,7 +10,7 @@ class GroupMember extends Model
     use HasFactory;
 
     protected $table = 'group_members';
-    protected $fillable = ['group_id', 'customer_id'];
+    protected $fillable = ['group_id', 'meter_id'];
     public $timestamps = false;
 
     static function destroyGroup($groupId)
@@ -18,28 +18,28 @@ class GroupMember extends Model
         GroupMember::where('group_id', $groupId)->delete();
     }
 
-    static function destroyGroupMember($customerId)
+    static function destroyGroupMember($meterId)
     {
-        GroupMember::where('customer_id', $customerId)->delete();
+        GroupMember::where('meter_id', $meterId)->delete();
     }
 
-    static function storeGroupMember($groupId, $customerId)
+    static function storeGroupMember($groupId, $meterId)
     {
-        foreach ($customerId as $key => $value) {
+        foreach ($meterId as $key => $value) {
             GroupMember::create([
                 'group_id'      => $groupId,
-                'customer_id'   => $value
+                'meter_id'   => $value
             ]);
         }
     }
 
-    static function updateGroupMember($groupId, $customerId)
+    static function updateGroupMember($groupId, $meterId)
     {
         GroupMember::destroyGroup($groupId);
-        foreach ($customerId as $key => $value) {
+        foreach ($meterId as $key => $value) {
             GroupMember::create([
                 'group_id'      => $groupId,
-                'customer_id'   => $value
+                'meter_id'   => $value
             ]);
         }
     }
