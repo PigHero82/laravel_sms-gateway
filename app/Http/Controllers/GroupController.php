@@ -40,8 +40,8 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'         => 'required',
-            'customer_id'   => 'required'
+            'title'     => 'required',
+            'meter_id'  => 'required|numeric'
         ]);
 
         Group::storeGroup($request);

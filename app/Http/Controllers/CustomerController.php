@@ -40,11 +40,10 @@ class CustomerController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'meter_no'      => 'required|numeric',
-            'customer_id'   => 'required|numeric',
-            'name'          => 'required',
-            'phone'         => 'required|numeric',
-            'address'       => 'required'
+            'meter_id'  => 'required|numeric',
+            'name'      => 'required',
+            'phone'     => 'required|numeric',
+            'address'   => 'required'
         ]);
 
         Customer::storeCustomer($request);
@@ -57,9 +56,9 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function show($customerId)
+    public function show($meterId)
     {
-        return json_encode(Customer::firstCustomer($customerId));
+        return json_encode(Customer::firstCustomer($meterId));
     }
 
     /**
@@ -80,17 +79,16 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $customerId)
+    public function update(Request $request, $meterId)
     {
         $request->validate([
-            'meter_no'      => 'required|numeric',
-            'customer_id'   => 'required|numeric',
-            'name'          => 'required',
-            'phone'         => 'required|numeric',
-            'address'       => 'required'
+            'meter_id'  => 'required|numeric',
+            'name'      => 'required',
+            'phone'     => 'required|numeric',
+            'address'   => 'required'
         ]);
 
-        Customer::updateCustomer($request, $customerId);
+        Customer::updateCustomer($request, $meterId);
         return back()->with('success', 'Data kontak pelanggan berhasil diubah');
     }
 
@@ -100,9 +98,9 @@ class CustomerController extends Controller
      * @param  \App\Models\Customer  $customer
      * @return \Illuminate\Http\Response
      */
-    public function destroy($customerId)
+    public function destroy($meterId)
     {
-        Customer::destroyCustomer($customerId);
+        Customer::destroyCustomer($meterId);
         return back()->with('success', 'Data kontak pelanggan berhasil dihapus');
     }
 }

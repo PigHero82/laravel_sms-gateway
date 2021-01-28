@@ -43,20 +43,25 @@ class OutboxController extends Controller
 
         if ($type == 1) {
             $request->validate([
-                'message'       => 'required',
-                'customer_id'   => 'required|numeric'
+                'message'   => 'required',
+                'meter_id'  => 'required|numeric'
             ]);
     
-            $customer = Customer::firstCustomer($request->customer_id);
+            $customer = Customer::firstCustomer($request->meter_id);
     
             $message = $request->message;
-            $message = (strpos($message, '[no_meter]') !== false) ? str_replace('[no_meter]', $customer->meter_no, $message) : $message ;
-            $message = (strpos($message, '[id_pelanggan]') !== false) ? str_replace('[id_pelanggan]', $customer->customer_id, $message) : $message ;
+            $message = (strpos($message, '[no_meter]') !== false) ? str_replace('[no_meter]', $customer->meter_id, $message) : $message ;
             $message = (strpos($message, '[nama]') !== false) ? str_replace('[nama]', $customer->name, $message) : $message ;
             $message = (strpos($message, '[alamat]') !== false) ? str_replace('[alamat]', $customer->address, $message) : $message ;
             $message = (strpos($message, '[no_telepon]') !== false) ? str_replace('[no_telepon]', $customer->phone, $message) : $message ;
+            $message = (strpos($message, '[tagihan_terakhir]') !== false) ? str_replace('[tagihan_terakhir]', $customer->last_month, $message) : $message ;
+            $message = (strpos($message, '[tagihan_saat_ini]') !== false) ? str_replace('[tagihan_saat_ini]', $customer->this_month, $message) : $message ;
+            $message = (strpos($message, '[jumlah_tagihan]') !== false) ? str_replace('[jumlah_tagihan]', $customer->usage, $message) : $message ;
+            $message = (strpos($message, '[biaya_tagihan]') !== false) ? str_replace('[biaya_tagihan]', $customer->tariff, $message) : $message ;
+            $message = (strpos($message, '[denda]') !== false) ? str_replace('[denda]', $customer->penalty, $message) : $message ;
+            $message = (strpos($message, '[bulan_tagihan]') !== false) ? str_replace('[bulan_tagihan]', $customer->billing_month, $message) : $message ;
 
-            Outbox::storeOutbox($customer->customer_id, $customer->phone, $message);
+            Outbox::storeOutbox($customer->meter_id, $customer->phone, $message);
             return redirect()->route('pesan.index')->with('success', 'Sedang mengirim pesan');
 
         } else if ($type == 2) {
@@ -69,13 +74,18 @@ class OutboxController extends Controller
     
             foreach ($group['member'] as $key => $value) {
                 $message = $request->message;
-                $message = (strpos($message, '[no_meter]') !== false) ? str_replace('[no_meter]', $value['meter_no'], $message) : $message ;
-                $message = (strpos($message, '[id_pelanggan]') !== false) ? str_replace('[id_pelanggan]', $value['customer_id'], $message) : $message ;
+                $message = (strpos($message, '[no_meter]') !== false) ? str_replace('[no_meter]', $value['meter_id'], $message) : $message ;
                 $message = (strpos($message, '[nama]') !== false) ? str_replace('[nama]', $value['name'], $message) : $message ;
                 $message = (strpos($message, '[alamat]') !== false) ? str_replace('[alamat]', $value['address'], $message) : $message ;
                 $message = (strpos($message, '[no_telepon]') !== false) ? str_replace('[no_telepon]', $value['phone'], $message) : $message ;
+                $message = (strpos($message, '[tagihan_terakhir]') !== false) ? str_replace('[tagihan_terakhir]', $value['last_month'], $message) : $message ;
+                $message = (strpos($message, '[tagihan_saat_ini]') !== false) ? str_replace('[tagihan_saat_ini]', $value['this_month'], $message) : $message ;
+                $message = (strpos($message, '[jumlah_tagihan]') !== false) ? str_replace('[jumlah_tagihan]', $value['usage'], $message) : $message ;
+                $message = (strpos($message, '[biaya_tagihan]') !== false) ? str_replace('[biaya_tagihan]', $value['tariff'], $message) : $message ;
+                $message = (strpos($message, '[denda]') !== false) ? str_replace('[denda]', $value['penalty'], $message) : $message ;
+                $message = (strpos($message, '[bulan_tagihan]') !== false) ? str_replace('[bulan_tagihan]', $value['billing_month'], $message) : $message ;
         
-                Outbox::storeOutbox($value['customer_id'], $value['phone'], $message);
+                Outbox::storeOutbox($value['meter_id'], $value['phone'], $message);
             }
 
             return redirect()->route('pesan.index')->with('success', 'Sedang mengirim pesan');

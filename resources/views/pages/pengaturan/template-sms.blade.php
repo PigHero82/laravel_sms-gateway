@@ -76,7 +76,7 @@
                 </x-input-form>
                 <x-input-form label="Template SMS">
                     <p class="font-small-1 mb-0">Atribut yang dapat digunakan:</p>
-                    <p><code>[no_meter]</code> <code>[id_pelanggan]</code> <code>[nama]</code> <code>[alamat]</code> <code>[no_telepon]</code></p>
+                    <p><code>[no_meter]</code> <code>[nama]</code> <code>[alamat]</code> <code>[no_telepon]</code> <code>[tagihan_terakhir]</code> <code>[tagihan_saat_ini]</code> <code>[jumlah_tagihan]</code> <code>[biaya_tagihan]</code> <code>[denda]</code> <code>[bulan_tagihan]</code></p>
                     <textarea class="form-control" name="message" cols="30" rows="10" placeholder="Isi"></textarea>
                 </x-input-form>
             </div>

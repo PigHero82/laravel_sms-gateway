@@ -48,10 +48,10 @@
                     <section>
                         <x-input-form label="Penerima">
                             @if (count($customer))
-                                <select name="customer_id" class="form-control" required>
+                                <select name="meter_id" class="form-control" required>
                                     <option value="" hidden>--Pilih pelanggan</option>
                                     @foreach ($customer as $item)
-                                        <option value="{{ $item->customer_id }}">{{ $item->name . ' - ' . $item->phone }}</option>
+                                        <option value="{{ $item->meter_id }}">{{ $item->name . ' - ' . $item->phone }}</option>
                                     @endforeach
                                 </select>
                             @else
@@ -83,7 +83,7 @@
                     <section>
                         <x-input-form label="Tulis Pesan">
                             <p class="font-small-1 mb-0">Atribut yang dapat digunakan:</p>
-                            <p><code>[no_meter]</code> <code>[id_pelanggan]</code> <code>[nama]</code> <code>[alamat]</code> <code>[no_telepon]</code></p>
+                            <p><code>[no_meter]</code> <code>[nama]</code> <code>[alamat]</code> <code>[no_telepon]</code> <code>[tagihan_terakhir]</code> <code>[tagihan_saat_ini]</code> <code>[jumlah_tagihan]</code> <code>[biaya_tagihan]</code> <code>[denda]</code> <code>[bulan_tagihan]</code></p>
                             <textarea class="form-control" name="message" id="messageMessage" cols="30" rows="5" placeholder="Tulis Pesan" required></textarea>
                         </x-input-form>
                     </section>
@@ -139,7 +139,7 @@
                             <section>
                                 <x-input-form label="Tulis Pesan">
                                     <p class="font-small-1 mb-0">Atribut yang dapat digunakan:</p>
-                                    <p><code>[no_meter]</code> <code>[id_pelanggan]</code> <code>[nama]</code> <code>[alamat]</code> <code>[no_telepon]</code></p>
+                                    <p><code>[no_meter]</code> <code>[nama]</code> <code>[alamat]</code> <code>[no_telepon]</code> <code>[tagihan_terakhir]</code> <code>[tagihan_saat_ini]</code> <code>[jumlah_tagihan]</code> <code>[biaya_tagihan]</code> <code>[denda]</code> <code>[bulan_tagihan]</code></p>
                                     <textarea class="form-control" name="message" id="groupMessage" cols="30" rows="5" placeholder="Tulis Pesan" required></textarea>
                                 </x-input-form>
                             </section>

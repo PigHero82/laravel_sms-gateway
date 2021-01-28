@@ -48,7 +48,7 @@
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>ID Pelanggan</th>
+                        <th>No. Meter</th>
                         <th>Nama</th>
                         <th>No. Telepon</th>
                         <th>Status</th>
@@ -59,7 +59,7 @@
                     @forelse ($customer as $item)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
-                            <td><a href="#modalEdit" class="modal-popup" data-toggle="modal" data-value="{{ $item->customer_id }}">{{ $item->customer_id }}</a></td>
+                            <td><a href="#modalEdit" class="modal-popup" data-toggle="modal" data-value="{{ $item->meter_id }}">{{ $item->meter_id }}</a></td>
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->phone }}</td>
                             <td>
@@ -70,10 +70,10 @@
                                 @endif
                             </td>
                             <td>
-                                <form action="{{ route('kontak.destroy', $item->customer_id)}}" method="post" onsubmit="return confirm('Apakah Anda yakin ingin menghapus {{ $item->name }}');">
+                                <form action="{{ route('kontak.destroy', $item->meter_id)}}" method="post" onsubmit="return confirm('Apakah Anda yakin ingin menghapus {{ $item->name }}');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-icon btn-icon rounded-circle btn-primary mr-1 mb-1 waves-effect waves-light modal-popup" data-toggle="modal" data-target="#modalEdit" data-value="{{ $item->customer_id }}" title="Ubah"><i class="feather icon-edit-2"></i></button>
+                                    <button type="button" class="btn btn-icon btn-icon rounded-circle btn-primary mr-1 mb-1 waves-effect waves-light modal-popup" data-toggle="modal" data-target="#modalEdit" data-value="{{ $item->meter_id }}" title="Ubah"><i class="feather icon-edit-2"></i></button>
                                     <button type="submit" class="btn btn-icon btn-icon rounded-circle btn-danger mr-1 mb-1 waves-effect waves-light" title="Hapus"><i class="feather icon-trash-2"></i></button>
                                 </form>
                             </td>
@@ -103,11 +103,7 @@
             @csrf
             <div class="modal-body">
                 <x-input-form label="No. Meter">
-                    <input type="number" class="form-control" name="meter_no" placeholder="No. Meter" required>
-                </x-input-form>
-                
-                <x-input-form label="ID Pelanggan">
-                    <input type="number" class="form-control" name="customer_id" placeholder="ID Pelanggan" required>
+                    <input type="number" class="form-control" name="meter_id" placeholder="No. Meter" required>
                 </x-input-form>
 
                 <x-input-form label="Nama">
@@ -136,11 +132,7 @@
             @method('PATCH')
             <div class="modal-body">
                 <x-input-form label="No. Meter">
-                    <input type="number" class="form-control" name="meter_no" id="meterNoEdit" placeholder="No. Meter" required>
-                </x-input-form>
-                
-                <x-input-form label="ID Pelanggan">
-                    <input type="number" class="form-control" name="customer_id" id="customerIdEdit" placeholder="ID Pelanggan" required>
+                    <input type="number" class="form-control" name="meter_id" id="meterIdEdit" placeholder="No. Meter" required>
                 </x-input-form>
 
                 <x-input-form label="Nama">
@@ -223,9 +215,8 @@
                 $.get("/kontak/" + id, function( data ) {
                     var d = JSON.parse(data);
                     console.log(d)
-                    $("#formEdit").attr("action", "{{ url('/kontak') }}/" + d.customer_id);
-                    $('#meterNoEdit').val(d.meter_no);
-                    $('#customerIdEdit').val(d.customer_id);
+                    $("#formEdit").attr("action", "{{ url('/kontak') }}/" + d.meter_id);
+                    $('#meterIdEdit').val(d.meter_id);
                     $('#nameEdit').val(d.name);
                     $('#phoneEdit').val(d.phone);
                     $('#addressEdit').val(d.address);

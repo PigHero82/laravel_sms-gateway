@@ -102,8 +102,8 @@
                         <tbody>
                             @forelse ($customer as $item)
                                 <tr>
-                                    <td><input type="checkbox" name="customer_id[]" value="{{ $item->customer_id }}"></td>
-                                    <td>{{ $item->customer_id }}</td>
+                                    <td><input type="checkbox" name="meter_id[]" value="{{ $item->meter_id }}"></td>
+                                    <td>{{ $item->meter_id }}</td>
                                     <td>{{ $item->name }}</td>
                                 </tr>
                             @empty
@@ -174,8 +174,8 @@
                         <tbody>
                             @forelse ($customer as $item)
                                 <tr>
-                                    <td><input class="checkbox" type="checkbox" name="customer_id[]" id="member-{{ $item->customer_id }}" value="{{ $item->customer_id }}" selected></td>
-                                    <td>{{ $item->customer_id }}</td>
+                                    <td><input class="checkbox" type="checkbox" name="meter_id[]" id="member-{{ $item->meter_id }}" value="{{ $item->meter_id }}" selected></td>
+                                    <td>{{ $item->meter_id }}</td>
                                     <td>{{ $item->name }}</td>
                                 </tr>
                             @empty
@@ -229,7 +229,7 @@
                     }
                     $('.checkbox').attr('checked', false);
                     for (let index = 0; index < d.member.length; index++) {
-                        $('#member-'+ d['member'][index].customer_id).attr('checked', true);
+                        $('#member-'+ d['member'][index].meter_id).attr('checked', true);
                     }
                 });
             });

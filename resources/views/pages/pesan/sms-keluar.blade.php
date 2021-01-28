@@ -42,7 +42,7 @@
             <thead>
                 <tr>
                     <th>No</th>
-                    <th>ID Pelanggan</th>
+                    <th>No. Meter</th>
                     <th>Nama</th>
                     <th>No. Telepon</th>
                     <th>Status</th>
@@ -53,7 +53,7 @@
                 @foreach ($outboxes as $item)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td><a href="#modal" class="modal-popup" data-value="{{ $item->id }}" data-toggle="modal" role="button">{{ $item->customer_id }}</a></td>
+                        <td><a href="#modal" class="modal-popup" data-value="{{ $item->id }}" data-toggle="modal" role="button">{{ $item->meter_id }}</a></td>
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->phone }}</td>
                         <td>
@@ -74,8 +74,8 @@
     <x-modal id="modal" title="Detail" class="">
         <div class="modal-body">
             <dl class="row">
-                <dt class="col-sm-4 text-sm-right">ID Pelanggan</dt>
-                <dd class="col-sm-8" id="customerId"></dd>
+                <dt class="col-sm-4 text-sm-right">No. Meter</dt>
+                <dd class="col-sm-8" id="meterId"></dd>
             </dl>
             
             <dl class="row">
@@ -121,7 +121,7 @@
                 $.get("/pesan/" + id, function( data ) {
                     let d = JSON.parse(data);
                     console.log(d)
-                    $('#customerId').text(d.customer_id);
+                    $('#meterId').text(d.meter_id);
                     $('#name').text(d.name);
                     $('#phone').text(d.phone);
                     $('#message').text(d.message);
