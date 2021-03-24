@@ -1,5 +1,6 @@
 <?php
 
+require __DIR__.'/auth.php';
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\GroupController;
@@ -65,4 +66,5 @@ Route::get('/pengaturan-modem', function () {
     return view('pages.pengaturan.pengaturan-modem.index');
 });
 
-require __DIR__.'/auth.php';
+Route::get('api', [OutboxController::class, 'getApi'])->name('api');
+Route::get('token', [OutboxController::class, 'getToken'])->name('token');

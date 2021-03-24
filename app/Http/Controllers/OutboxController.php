@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\Group;
 use App\Models\Outbox;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class OutboxController extends Controller
 {
@@ -46,9 +47,9 @@ class OutboxController extends Controller
                 'message'   => 'required',
                 'meter_id'  => 'required|numeric'
             ]);
-    
+
             $customer = Customer::firstCustomer($request->meter_id);
-    
+
             $message = $request->message;
             $message = (strpos($message, '[no_meter]') !== false) ? str_replace('[no_meter]', $customer->meter_id, $message) : $message ;
             $message = (strpos($message, '[nama]') !== false) ? str_replace('[nama]', $customer->name, $message) : $message ;
@@ -69,9 +70,9 @@ class OutboxController extends Controller
                 'message'   => 'required',
                 'group_id'  => 'required|numeric'
             ]);
-    
+
             $group = Group::firstGroup($request->group_id);
-    
+
             foreach ($group['member'] as $key => $value) {
                 $message = $request->message;
                 $message = (strpos($message, '[no_meter]') !== false) ? str_replace('[no_meter]', $value['meter_id'], $message) : $message ;
@@ -84,13 +85,13 @@ class OutboxController extends Controller
                 $message = (strpos($message, '[biaya_tagihan]') !== false) ? str_replace('[biaya_tagihan]', $value['tariff'], $message) : $message ;
                 $message = (strpos($message, '[denda]') !== false) ? str_replace('[denda]', $value['penalty'], $message) : $message ;
                 $message = (strpos($message, '[bulan_tagihan]') !== false) ? str_replace('[bulan_tagihan]', $value['billing_month'], $message) : $message ;
-        
+
                 Outbox::storeOutbox($value['meter_id'], $value['phone'], $message);
             }
 
             return redirect()->route('pesan.index')->with('success', 'Sedang mengirim pesan');
         }
-        
+
     }
 
     /**
@@ -136,5 +137,60 @@ class OutboxController extends Controller
     public function destroy(Outbox $outbox)
     {
         //
+    }
+
+    function base64UrlEncode($text)
+    {
+        return str_replace(
+            ['+', '/', '='],
+            ['-', '_', ''],
+            base64_encode($text)
+        );
+    }
+
+    function getToken()
+    {
+        // get the local secret key
+        $secret = env('JWT_SECRET');
+
+        // Create the token header
+        $header = json_encode([
+            'typ' => 'JWT',
+            'alg' => 'HS256'
+        ]);
+
+        // Create the token payload
+        $payload = json_encode([
+            'user' => 'layananpel',
+            'pass' => '038e3e4ad74453a72153fbbf32a60573',
+            'tanggal' => date('Y-m-d H:i:s')
+        ]);
+        // echo date('d-m-Y h:i:s');
+        // Encode Header
+        $base64UrlHeader = $this->base64UrlEncode($header);
+
+        // Encode Payload
+        $base64UrlPayload = $this->base64UrlEncode($payload);
+
+        // Create Signature Hash
+        $signature = hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $secret, true);
+
+        // Encode Signature to Base64Url String
+        $base64UrlSignature = $this->base64UrlEncode($signature);
+
+        // Create JWT
+        $jwt = $base64UrlHeader . "." . $base64UrlPayload . "." . $base64UrlSignature;
+
+        return $jwt;
+    }
+
+    public function getApi()
+    {
+        // return 'Bearer '.$this->getToken();
+        $response = Http::withHeaders(['Authorization' => 'Bearer '.$this->getToken()])
+                        ->get('https://apikabbangli.limasakti.co.id/api/layanan-datapelanggan/2c/0101');
+    	$data = $response->json();
+		// dd($data);
+		return $data;
     }
 }
