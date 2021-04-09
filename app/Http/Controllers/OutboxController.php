@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Golongan;
 use App\Models\Group;
 use App\Models\Outbox;
+use App\Models\Payment;
+use App\Models\Rayon;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -186,21 +190,49 @@ class OutboxController extends Controller
 
     public function getApi($golongan, $rayon, $tahun, $bulan)
     {
-        // return 'Bearer '.$this->getToken();
-        $response = Http::withHeaders(['Authorization' => 'Bearer '.$this->getToken()])
-                        ->get('https://apikabbangli.limasakti.co.id/api/layanan-datapelanggan/'.$golongan.'/'.$rayon);
-    	$data = $response->json();
-		// dd($data);
-		// return $data;
-        $tagihan = [];
-        $periode = $tahun . $bulan;
+        $golongans = Golongan::getGolongan();
+        $rayons = Rayon::getRayon();
 
-        foreach ($data['data'] as $key => $value) {
-            if ($value['periode'] == $periode) {
-                $tagihan[] = $value;
+        $kode_gol = '2C';
+        $kode_rayon = '0101';
+
+        $tagihan = [];
+        $tahun = now()->year;
+        $bulan = (now()->month <= 9) ? "0".now()->month : now()->month ;
+        $periode = $tahun . "03";
+
+        foreach ($golongans as $key => $golongan) {
+            foreach ($rayons as $key => $rayon) {
+                $response = Http::withHeaders(['Authorization' => 'Bearer '.$this->getToken()])
+                                ->get('https://apikabbangli.limasakti.co.id/api/layanan-datapelanggan/'.$kode_gol.'/'.$kode_rayon);
+                $data = $response->json();
+
+                if (count($data)) {
+                    foreach ($data['data'] as $key => $value) {
+                        if ($value['periode'] == $periode) {
+                            $api = [];
+                            $year = substr($value['periode'], 0, 4);
+                            $month = substr($value['periode'], 4, 2);
+
+                            $api['meter_id']        = $value['nosamb'];
+                            $api['last_month']      = $value['stanlalu'];
+                            $api['this_month']      = $value['stanskrg'];
+                            $api['usage']           = $value['pakai'];
+                            $api['tariff']          = $value['tagihan'];
+                            $api['penalty']         = $value['denda'];
+                            $api['billing_month']   = $year.'-'.$month.'-01';
+                            $api['created_at']      = now();
+                            $api['updated_at']      = now();
+
+                            $tagihan[] = $api;
+                        }
+                    }
+                }
+
+                Payment::insert($tagihan);
             }
         }
 
-        return ($tagihan);
+        return 'sukses';
     }
 }

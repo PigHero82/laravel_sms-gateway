@@ -11,4 +11,8 @@ class Rayon extends Model
 
     protected $table = 'rayon';
     protected $fillable = ['kode_rayon', 'nama_rayon', 'kode_area', 'area', 'kode_wil', 'wilayah', 'kode_loket'];
+
+    static function getRayon() {
+        return Rayon::all();
+    }
 }

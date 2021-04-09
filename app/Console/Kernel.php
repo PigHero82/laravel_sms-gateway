@@ -25,6 +25,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            foreach ($golongan as $key => $value) {
+                foreach ($rayon as $key => $value) {
+                    DB::table('recent_users')->delete();
+                }
+            }
+        })->everyMinute();
     }
 
     /**
