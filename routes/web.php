@@ -66,5 +66,5 @@ Route::get('/pengaturan-modem', function () {
     return view('pages.pengaturan.pengaturan-modem.index');
 });
 
-Route::get('api', [OutboxController::class, 'getApi'])->name('api');
+Route::get('api/{golongan}/{token}/{tahun}/{bulan}', [OutboxController::class, 'getApi'])->name('api');
 Route::get('token', [OutboxController::class, 'getToken'])->name('token');

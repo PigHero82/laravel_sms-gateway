@@ -184,13 +184,23 @@ class OutboxController extends Controller
         return $jwt;
     }
 
-    public function getApi()
+    public function getApi($golongan, $rayon, $tahun, $bulan)
     {
         // return 'Bearer '.$this->getToken();
         $response = Http::withHeaders(['Authorization' => 'Bearer '.$this->getToken()])
-                        ->get('https://apikabbangli.limasakti.co.id/api/layanan-datapelanggan/2c/0101');
+                        ->get('https://apikabbangli.limasakti.co.id/api/layanan-datapelanggan/'.$golongan.'/'.$rayon);
     	$data = $response->json();
 		// dd($data);
-		return $data;
+		// return $data;
+        $tagihan = [];
+        $periode = $tahun . $bulan;
+
+        foreach ($data['data'] as $key => $value) {
+            if ($value['periode'] == $periode) {
+                $tagihan[] = $value;
+            }
+        }
+
+        return ($tagihan);
     }
 }
