@@ -193,7 +193,7 @@ class OutboxController extends Controller
         $golongans = Golongan::getGolongan();
         $rayons = Rayon::getRayon();
 
-        $kode_gol = '2C';
+        $kode_gol = $golongan;
         $kode_rayon = '0101';
 
         $tagihan = [];
@@ -201,14 +201,18 @@ class OutboxController extends Controller
         $bulan = (now()->month <= 9) ? "0".now()->month : now()->month ;
         $periode = $tahun . "03";
 
-        foreach ($golongans as $key => $golongan) {
+        // foreach ($golongans as $key => $golongan) {
             foreach ($rayons as $key => $rayon) {
+                // $response = '';
+                // $data = [];
                 $response = Http::withHeaders(['Authorization' => 'Bearer '.$this->getToken()])
-                                ->get('https://apikabbangli.limasakti.co.id/api/layanan-datapelanggan/'.$kode_gol.'/'.$kode_rayon);
+                                // ->get('https://apikabbangli.limasakti.co.id/api/layanan-datapelanggan/'.$golongan->kode_gol.'/'.$rayon->kode_rayon);
+                                ->get('https://apikabbangli.limasakti.co.id/api/layanan-datapelanggan/'.$kode_gol.'/'.$rayon->kode_rayon);
                 $data = $response->json();
 
-                if (count($data)) {
+                if ($data['mssg'] == 'oke') {
                     foreach ($data['data'] as $key => $value) {
+                        return $value;
                         if ($value['periode'] == $periode) {
                             $api = [];
                             $year = substr($value['periode'], 0, 4);
@@ -224,15 +228,18 @@ class OutboxController extends Controller
                             $api['created_at']      = now();
                             $api['updated_at']      = now();
 
-                            $tagihan[] = $api;
+                            // $tagihan[] = $api;
+                            $tagihan[] = $value;
                         }
                     }
                 }
-
-                Payment::insert($tagihan);
+                // Payment::insert($tagihan);
             }
-        }
-
+        // }
+        // $datas['golongan'] = $kode_gol;
+        $datas['count'] = count($tagihan);
+        $datas['tagihan'] = $tagihan;
+        return $datas;
         return 'sukses';
     }
 }

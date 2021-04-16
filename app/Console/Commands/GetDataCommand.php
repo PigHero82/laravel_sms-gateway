@@ -3,8 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Models\Golongan;
+use App\Models\Payment;
 use App\Models\Rayon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Http;
 
 class GetDataCommand extends Command
 {
@@ -13,7 +15,7 @@ class GetDataCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'lastDayOfMonth:getdata';
+    protected $signature = 'getData:lastDayOfMonth';
 
     /**
      * The console command description.
@@ -39,43 +41,61 @@ class GetDataCommand extends Command
      */
     public function handle()
     {
-        $golongan = Golongan::getGolongan();
-        $rayon = Rayon::getRayon();
+        $golongans = Golongan::getGolongan();
+        $rayons = Rayon::getRayon();
 
         $tagihan = [];
         $tahun = now()->year;
         $bulan = (now()->month <= 9) ? "0".now()->month : now()->month ;
-        $periode = $tahun . $bulan;
+        // $periode = $tahun . $bulan;
+        $periode = $tahun . '02';
 
         foreach ($golongans as $key => $golongan) {
             foreach ($rayons as $key => $rayon) {
                 $response = Http::withHeaders(['Authorization' => 'Bearer '.$this->getToken()])
-                                ->get('https://apikabbangli.limasakti.co.id/api/layanan-datapelanggan/'.$kode_gol.'/'.$kode_rayon);
+                                ->get('https://apikabbangli.limasakti.co.id/api/layanan-datapelanggan/'.$golongan->kode_gol.'/'.$rayon->kode_rayon);
                 $data = $response->json();
 
-                if (count($data)) {
+                if ($data['mssg'] == 'oke') {
                     foreach ($data['data'] as $key => $value) {
                         if ($value['periode'] == $periode) {
-                            $api = [];
+                            // $api = [];
                             $year = substr($value['periode'], 0, 4);
                             $month = substr($value['periode'], 4, 2);
 
-                            $api['meter_id']        = $value['nosamb'];
-                            $api['last_month']      = $value['stanlalu'];
-                            $api['this_month']      = $value['stanskrg'];
-                            $api['usage']           = $value['pakai'];
-                            $api['tariff']          = $value['tagihan'];
-                            $api['penalty']         = $value['denda'];
-                            $api['billing_month']   = $year.'-'.$month.'-01';
-                            $api['created_at']      = now();
-                            $api['updated_at']      = now();
+                            Payment::firstOrCreate(
+                                [
+                                    'meter_id'      => $value['nosamb'],
+                                    'billing_month' => $year.'-'.$month.'-01'
+                                ], [
+                                    'meter_id'      => $value['nosamb'],
+                                    'last_month'    => $value['stanlalu'],
+                                    'this_month'    => $value['stanskrg'],
+                                    'usage'         => $value['pakai'],
+                                    'tariff'        => $value['tagihan'],
+                                    'penalty'       => $value['denda'],
+                                    'billing_month' => $year.'-'.$month.'-01',
+                                    'created_at'    => now(),
+                                    'updated_at'    => now()
+                                ]
+                            );
 
-                            $tagihan[] = $api;
+                            // $api['meter_id']        = $value['nosamb'];
+                            // $api['last_month']      = $value['stanlalu'];
+                            // $api['this_month']      = $value['stanskrg'];
+                            // $api['usage']           = $value['pakai'];
+                            // $api['tariff']          = $value['tagihan'];
+                            // $api['penalty']         = $value['denda'];
+                            // $api['billing_month']   = $year.'-'.$month.'-01';
+                            // $api['created_at']      = now();
+                            // $api['updated_at']      = now();
+
+                            // $tagihan[] = $api;
                         }
                     }
                 }
 
-                Payment::insert($tagihan);
+                // Payment::insert($tagihan);
             }
         }
     }
